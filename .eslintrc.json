@@ -19,6 +19,8 @@
         "linebreak-style": [
             "error",
             "windows"
-        ]
+        ],
+        "arrow-parens": "off",
+        "comma-dangle": "off"
     }
 }
