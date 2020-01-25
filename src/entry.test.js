@@ -33,7 +33,7 @@ describe('Entry creation', () => {
 
   test('Tags', () => {
     const text = '~Test to see if it caputers ~tags as expected';
-    const tags = ['~test', '~tags'];
+    const tags = ['test', 'tags'];
 
     const entry = new Entry(text);
 
@@ -42,7 +42,7 @@ describe('Entry creation', () => {
 
   test('Duplicate tags', () => {
     const text = 'this is the ~title. and this is the ~body. this should not be in the ~title.';
-    const tags = ['~title', '~body'];
+    const tags = ['title', 'body'];
 
     const entry = new Entry(text);
 
