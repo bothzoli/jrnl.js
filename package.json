@@ -27,5 +27,8 @@
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.19.1",
     "jest": "^24.9.0"
+  },
+  "dependencies": {
+    "chalk": "^3.0.0"
   }
 }
