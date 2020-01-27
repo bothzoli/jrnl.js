@@ -1,5 +1,6 @@
 const readline = require('readline');
 const { Entry } = require('./src/entry');
+const util = require('./src/util/util');
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -18,6 +19,5 @@ rl.on('line', (line) => {
 }).on('close', () => {
   const newEntry = new Entry(jrnlEntry);
   console.log(newEntry.toString());
-  console.log(`tags: ${newEntry.tags}`);
-  process.exit(0);
+  util(newEntry).then(() => process.exit(0));
 });

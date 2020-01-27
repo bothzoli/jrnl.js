@@ -29,7 +29,7 @@ class Entry {
 
   toString() {
     const timeStamp = moment(this.timeStamp).format(timeStampFormat);
-    return `${chalk.blue(timeStamp.toLocaleString())} - ${colorTags(this.title)}\n\n${colorTags(this.text)}`;
+    return `${chalk.blue(timeStamp)} - ${colorTags(this.title)}\n\n${colorTags(this.text)}`;
   }
 }
 

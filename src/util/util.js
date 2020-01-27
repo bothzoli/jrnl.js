@@ -1,7 +1,9 @@
-// const fs = require('fs');
+const fs = require('fs');
 
-module.exports = () => {
-  // const e = fs.existsSync('./../krumpli.js');
-  const val = 1 + 2;
-  return val;
+module.exports = async (data) => {
+  const entries = (await fs.promises.readFile('./entries.json', 'utf8').catch(() => null)) || '{"Entries":[]}';
+  const jsonEntries = JSON.parse(entries);
+  jsonEntries.Entries.push(data);
+  console.log(jsonEntries);
+  await fs.promises.writeFile('./entries.json', JSON.stringify(jsonEntries));
 };
