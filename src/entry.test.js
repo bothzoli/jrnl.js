@@ -7,7 +7,7 @@ describe('Entry creation', () => {
   test('Single line entry', () => {
     const text = 'Test';
 
-    const entry = new Entry(text);
+    const entry = Entry(text);
 
     expect(entry.title).toBe(text);
     expect(entry.text).toBe('');
@@ -23,7 +23,7 @@ describe('Entry creation', () => {
     neither is this! although it's a new line!`;
     const fullText = `${title} ${text}`;
 
-    const entry = new Entry(fullText);
+    const entry = Entry(fullText);
 
     expect(entry.title).toBe(title);
     expect(entry.text).toBe(text);
@@ -35,7 +35,7 @@ describe('Entry creation', () => {
     const text = '~Test to see if it caputers ~tags as expected';
     const tags = ['test', 'tags'];
 
-    const entry = new Entry(text);
+    const entry = Entry(text);
 
     expect(entry.tags).toEqual(expect.arrayContaining(tags));
   });
@@ -44,7 +44,7 @@ describe('Entry creation', () => {
     const text = 'this is the ~title. and this is the ~body. this should not be in the ~title.';
     const tags = ['title', 'body'];
 
-    const entry = new Entry(text);
+    const entry = Entry(text);
 
     expect(entry.tags).toEqual(expect.arrayContaining(tags));
     expect(entry.tags.length).toBe(2);

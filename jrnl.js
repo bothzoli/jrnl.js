@@ -1,6 +1,6 @@
 const readline = require('readline');
-const { Entry } = require('./src/entry');
-const util = require('./src/util/util');
+const { Entry, entryToString } = require('./src/entry');
+const { addNewEntry, readEntries } = require('./src/util/util');
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -13,11 +13,17 @@ rl.prompt();
 
 let jrnlEntry = '';
 
-rl.on('line', (line) => {
-  jrnlEntry += `${line}\n`;
-  rl.prompt();
-}).on('close', () => {
-  const newEntry = new Entry(jrnlEntry);
-  console.log(newEntry.toString());
-  util(newEntry).then(() => process.exit(0));
-});
+(async () => {
+  rl.on('line', (line) => {
+    jrnlEntry += `${line}\n`;
+    rl.prompt();
+  }).on('close', async () => {
+    const newEntry = Entry(jrnlEntry);
+
+    entryToString(newEntry);
+    await addNewEntry(newEntry);
+
+    const entryFile = await readEntries();
+    entryFile.Entries.map(entry => console.log(entryToString(entry)));
+  });
+})();
