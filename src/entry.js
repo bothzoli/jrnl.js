@@ -1,8 +1,10 @@
 const chalk = require('chalk');
 const moment = require('moment');
 
+const { readEntries } = require('./util/util');
+
 const tagCharacter = '~';
-const timeStampFormat = 'YYYY-MM-DD HH:mm';
+const timeStampFormat = 'YYYY-MM-DD HH:mm:ss';
 
 const entryMatcher = /(^.*?[.!?])(?:\s|$)(.*)|(.*)/s;
 const tagMatcher = new RegExp(`(?<=\\s|^)${tagCharacter}(\\w+)\\b`, 'g');
@@ -34,11 +36,15 @@ const entryToString = (entry) => {
   return `${chalk.blue(timeStamp)} - ${colorTags(entry.title)}\n\n${colorTags(entry.text)}`;
 };
 
-const listEntries = () => {
-
+const listEntries = async (writer, numberOfEntries) => {
+  (await readEntries()).Entries
+    .sort((x, y) => y.timeStamp - x.timeStamp)
+    .slice(0, numberOfEntries)
+    .map(entry => writer(entryToString(entry)));
 };
 
 module.exports = {
   Entry,
-  entryToString
+  entryToString,
+  listEntries
 };

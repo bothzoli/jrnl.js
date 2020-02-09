@@ -1,12 +1,14 @@
 const readline = require('readline');
-const { Entry, entryToString } = require('./src/entry');
-const { addNewEntry, readEntries } = require('./src/util/util');
+const { Entry, entryToString, listEntries } = require('./src/entry');
+const { addNewEntry } = require('./src/util/util');
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
   prompt: '',
 });
+
+listEntries(console.log, 3);
 
 rl.write('Please write your jrnl entry!\n');
 rl.prompt();
@@ -23,7 +25,6 @@ let jrnlEntry = '';
     entryToString(newEntry);
     await addNewEntry(newEntry);
 
-    const entryFile = await readEntries();
-    entryFile.Entries.map(entry => console.log(entryToString(entry)));
+    listEntries(console.log, 3);
   });
 })();
