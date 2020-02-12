@@ -36,9 +36,23 @@ const entryToString = (entry) => {
   return `${chalk.blue(timeStamp)} - ${colorTags(entry.title)}\n\n${colorTags(entry.text)}`;
 };
 
-const listEntries = async (writer, numberOfEntries) => {
+const beforeFilter = timeStamp => entry => entry.timeStamp < moment(timeStamp);
+
+const afterFilter = timeStamp => entry => entry.timeStamp > moment(timeStamp);
+
+const grepFilter = filterText => entry => RegExp(filterText, 'i').test(entry.title) || RegExp(filterText, 'i').test(entry.text);
+
+const entryFilter = filters => entry => filters.reduce((acc, curr) => acc && curr(entry), true);
+
+const listEntries = async (writer, numberOfEntries, before, after, grep) => {
+  let filters = [];
+  filters = before ? filters.concat(beforeFilter(before)) : filters;
+  filters = after ? filters.concat(afterFilter(after)) : filters;
+  filters = grep ? filters.concat(grepFilter(grep)) : filters;
+
   (await readEntries()).Entries
     .sort((x, y) => y.timeStamp - x.timeStamp)
+    .filter(entryFilter(filters))
     .slice(0, numberOfEntries)
     .map(entry => writer(entryToString(entry)));
 };

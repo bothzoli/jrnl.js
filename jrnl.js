@@ -7,8 +7,9 @@ const { addNewEntry } = require('./src/util/util');
 
 const { argv } = yargs;
 
-if (argv.l >= 0) {
-  listEntries(console.log, argv.l);
+if (argv.l) {
+  const numberOfEntries = argv.l === true ? Number.MAX_VALUE : argv.l;
+  listEntries(console.log, numberOfEntries, argv.b, argv.a, argv.g);
 } else if (argv._.length === 0) {
   const rl = readline.createInterface({
     input: process.stdin,
