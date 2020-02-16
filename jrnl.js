@@ -5,11 +5,25 @@ const yargs = require('yargs');
 const { Entry, listEntries } = require('./src/entry');
 const { addNewEntry } = require('./src/util/util');
 
-const { argv } = yargs;
+const { argv } = yargs
+  .usage('Usage: $0 -l [options]')
+  .usage('Usage: $0 --list [options]')
+  .alias('l', 'list')
+  .describe('l', 'List jrnl.js entries')
+  .alias('b', 'before')
+  .describe('b', 'Only list entries created before a given date')
+  .alias('a', 'after')
+  .describe('a', 'Only list entries created after a given date')
+  .alias('g', 'grep')
+  .describe('g', 'RegExp search in entries')
+  .example('$0 -l -a 2010-01-12 -g "beers?"', 'List entries created after 2010-01-12 that contain "beer" or "beers"')
+  .alias('v', 'version')
+  .help('h')
+  .alias('h', 'help');
 
-if (argv.l) {
-  const numberOfEntries = argv.l === true ? Number.MAX_VALUE : argv.l;
-  listEntries(console.log, numberOfEntries, argv.b, argv.a, argv.g);
+if (argv.list) {
+  const numberOfEntries = argv.list === true ? Number.MAX_VALUE : argv.list;
+  listEntries(console.log, numberOfEntries, argv.before, argv.after, argv.grep);
 } else if (argv._.length === 0) {
   const rl = readline.createInterface({
     input: process.stdin,
