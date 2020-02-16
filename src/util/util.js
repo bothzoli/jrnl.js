@@ -2,22 +2,19 @@ const fs = require('fs');
 
 const entriesJSON = './entries.json';
 
-const addNewEntry = async data => {
-  const entries = (await fs.promises.readFile(entriesJSON, 'utf8').catch(() => null)) || '{"Entries":[]}';
+const readFromFile = async fileName => (await fs.promises.readFile(fileName, 'utf8').catch(() => null)) || '[]';
 
-  await fs.promises.writeFile(
-    entriesJSON,
-    JSON.stringify({
-      Entries: [data, ...(JSON.parse(entries)).Entries]
-    })
-  );
+const writeToFile = fileName => async entries => {
+  await fs.promises.writeFile(fileName, JSON.stringify(entries));
 };
 
-const readEntries = async () => {
-  const entries = (await fs.promises.readFile(entriesJSON, 'utf8').catch(() => null)) || '{"Entries":[]}';
+const addNewEntry = async entry => {
+  const entries = (await fs.promises.readFile(entriesJSON, 'utf8').catch(() => null)) || '[]';
 
-  return JSON.parse(entries);
+  await writeToFile(entriesJSON)([entry, ...JSON.parse(entries)]);
 };
+
+const readEntries = async () => JSON.parse(await readFromFile(entriesJSON));
 
 module.exports = {
   addNewEntry,

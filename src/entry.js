@@ -56,7 +56,7 @@ const listEntries = async (writer, numberOfEntries, before, after, grep, toMD) =
 
   const converter = toMD ? entryToMarkDown : entryToString;
 
-  (await readEntries()).Entries
+  (await readEntries())
     .filter(entryFilter(filters))
     .slice(0, numberOfEntries)
     .map(entry => writer(converter(entry)));

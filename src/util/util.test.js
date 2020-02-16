@@ -14,11 +14,11 @@ describe('File utilities', () => {
     const writeFileArgument = fs.promises.writeFile.mock.calls[0][1];
 
     expect(writeFileName).toBe(entriesJSON);
-    expect(writeFileArgument).toBe('{"Entries":["asdf"]}');
+    expect(writeFileArgument).toBe('["asdf"]');
   });
 
   test('Add 1 entry to already existing entries', async () => {
-    fs.promises.readFile = jest.fn(() => Promise.resolve('{"Entries":["qwer"]}'));
+    fs.promises.readFile = jest.fn(() => Promise.resolve('["qwer"]'));
     fs.promises.writeFile = jest.fn();
 
     await addNewEntry('asdf');
@@ -27,7 +27,7 @@ describe('File utilities', () => {
     const writeFileArgument = fs.promises.writeFile.mock.calls[0][1];
 
     expect(writeFileName).toBe(entriesJSON);
-    expect(writeFileArgument).toBe('{"Entries":["asdf","qwer"]}');
+    expect(writeFileArgument).toBe('["asdf","qwer"]');
   });
 
   test('Read entries when none exists', async () => {
@@ -35,16 +35,16 @@ describe('File utilities', () => {
 
     const entries = await readEntries();
 
-    expect(entries.Entries.length).toBe(0);
+    expect(entries.length).toBe(0);
   });
 
 
   test('Read entries when none exists', async () => {
-    fs.promises.readFile = jest.fn(() => Promise.resolve('{"Entries":["qwer"]}'));
+    fs.promises.readFile = jest.fn(() => Promise.resolve('["qwer"]'));
 
     const entries = await readEntries();
 
-    expect(entries.Entries.length).toBe(1);
-    expect(entries.Entries[0]).toBe('qwer');
+    expect(entries.length).toBe(1);
+    expect(entries[0]).toBe('qwer');
   });
 });
