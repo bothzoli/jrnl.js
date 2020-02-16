@@ -2,6 +2,12 @@ const chalk = require('chalk');
 const moment = require('moment');
 
 const { readEntries } = require('./util/util');
+const {
+  beforeFilter,
+  afterFilter,
+  grepFilter,
+  entryFilter
+} = require('./util/filters');
 
 const tagCharacter = '~';
 const timeStampFormat = 'YYYY-MM-DD HH:mm:ss';
@@ -15,6 +21,7 @@ const tagFormatter = tag => tagToLowercase(stripTagChar(tag));
 const removeDuplicateTags = (unique, item) => (unique.includes(item) ? unique : [...unique, item]);
 
 const colorTags = (str) => str.replace(tagMatcher, chalk.blue('$1'));
+const boldTags = (str) => str.replace(tagMatcher, '__$1__');
 
 const Entry = (entryText) => {
   const entry = entryMatcher.exec(entryText);
@@ -36,25 +43,24 @@ const entryToString = (entry) => {
   return `${chalk.blue(timeStamp)} - ${colorTags(entry.title)}\n\n${colorTags(entry.text)}`;
 };
 
-const beforeFilter = timeStamp => entry => entry.timeStamp < moment(timeStamp);
+const entryToMarkDown = (entry) => {
+  const timeStamp = moment(entry.timeStamp).format(timeStampFormat);
+  return `## ${timeStamp} - ${boldTags(entry.title)}\n\n${boldTags(entry.text)}`;
+};
 
-const afterFilter = timeStamp => entry => entry.timeStamp > moment(timeStamp);
-
-const grepFilter = filterText => entry => RegExp(filterText, 'i').test(entry.title) || RegExp(filterText, 'i').test(entry.text);
-
-const entryFilter = filters => entry => filters.reduce((acc, curr) => acc && curr(entry), true);
-
-const listEntries = async (writer, numberOfEntries, before, after, grep) => {
+const listEntries = async (writer, numberOfEntries, before, after, grep, toMD) => {
   let filters = [];
   filters = before ? filters.concat(beforeFilter(before)) : filters;
   filters = after ? filters.concat(afterFilter(after)) : filters;
   filters = grep ? filters.concat(grepFilter(grep)) : filters;
 
+  const converter = toMD ? entryToMarkDown : entryToString;
+
   (await readEntries()).Entries
     .sort((x, y) => y.timeStamp - x.timeStamp)
     .filter(entryFilter(filters))
     .slice(0, numberOfEntries)
-    .map(entry => writer(entryToString(entry)));
+    .map(entry => writer(converter(entry)));
 };
 
 module.exports = {

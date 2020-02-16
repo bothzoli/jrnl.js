@@ -17,13 +17,16 @@ const { argv } = yargs
   .alias('g', 'grep')
   .describe('g', 'RegExp search in entries')
   .example('$0 -l -a 2010-01-12 -g "beers?"', 'List entries created after 2010-01-12 that contain "beer" or "beers"')
+  .alias('m', 'markdown')
+  .describe('m', 'List entries in MarkDown format')
+  .boolean('m')
   .alias('v', 'version')
   .help('h')
   .alias('h', 'help');
 
 if (argv.list) {
   const numberOfEntries = argv.list === true ? Number.MAX_VALUE : argv.list;
-  listEntries(console.log, numberOfEntries, argv.before, argv.after, argv.grep);
+  listEntries(console.log, numberOfEntries, argv.before, argv.after, argv.grep, argv.markdown);
 } else if (argv._.length === 0) {
   const rl = readline.createInterface({
     input: process.stdin,
