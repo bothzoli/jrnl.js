@@ -2,13 +2,15 @@ const fs = require('fs');
 
 const entriesJSON = './entries.json';
 
-const addNewEntry = async (data) => {
+const addNewEntry = async data => {
   const entries = (await fs.promises.readFile(entriesJSON, 'utf8').catch(() => null)) || '{"Entries":[]}';
 
-  const jsonEntries = JSON.parse(entries);
-  jsonEntries.Entries.push(data);
-
-  await fs.promises.writeFile(entriesJSON, JSON.stringify(jsonEntries));
+  await fs.promises.writeFile(
+    entriesJSON,
+    JSON.stringify({
+      Entries: [data, ...(JSON.parse(entries)).Entries]
+    })
+  );
 };
 
 const readEntries = async () => {

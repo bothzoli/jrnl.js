@@ -20,10 +20,10 @@ const tagToLowercase = tag => tag.toLowerCase();
 const tagFormatter = tag => tagToLowercase(stripTagChar(tag));
 const removeDuplicateTags = (unique, item) => (unique.includes(item) ? unique : [...unique, item]);
 
-const colorTags = (str) => str.replace(tagMatcher, chalk.blue('$1'));
-const boldTags = (str) => str.replace(tagMatcher, '__$1__');
+const colorTags = str => str.replace(tagMatcher, chalk.blue('$1'));
+const boldTags = str => str.replace(tagMatcher, '__$1__');
 
-const Entry = (entryText) => {
+const Entry = entryText => {
   const entry = entryMatcher.exec(entryText);
   const newEntry = {};
 
@@ -38,12 +38,12 @@ const Entry = (entryText) => {
   return newEntry;
 };
 
-const entryToString = (entry) => {
+const entryToString = entry => {
   const timeStamp = moment(entry.timeStamp).format(timeStampFormat);
   return `${chalk.blue(timeStamp)} - ${colorTags(entry.title)}\n\n${colorTags(entry.text)}`;
 };
 
-const entryToMarkDown = (entry) => {
+const entryToMarkDown = entry => {
   const timeStamp = moment(entry.timeStamp).format(timeStampFormat);
   return `## ${timeStamp} - ${boldTags(entry.title)}\n\n${boldTags(entry.text)}`;
 };
@@ -57,7 +57,6 @@ const listEntries = async (writer, numberOfEntries, before, after, grep, toMD) =
   const converter = toMD ? entryToMarkDown : entryToString;
 
   (await readEntries()).Entries
-    .sort((x, y) => y.timeStamp - x.timeStamp)
     .filter(entryFilter(filters))
     .slice(0, numberOfEntries)
     .map(entry => writer(converter(entry)));

@@ -40,7 +40,7 @@ if (argv.list) {
   let jrnlEntry = '';
 
   (async () => {
-    rl.on('line', (line) => {
+    rl.on('line', line => {
       jrnlEntry += `${line}\n`;
       rl.prompt();
     }).on('close', async () => {
