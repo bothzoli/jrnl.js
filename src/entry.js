@@ -1,6 +1,5 @@
-const chalk = require('chalk');
-const moment = require('moment');
-
+const compose = require('./fp');
+const { entryToString, entryToMarkDown } = require('./util/printer');
 const { readEntries } = require('./util/util');
 const {
   beforeFilter,
@@ -10,18 +9,14 @@ const {
 } = require('./util/filters');
 
 const tagCharacter = '~';
-const timeStampFormat = 'YYYY-MM-DD HH:mm:ss';
 
 const entryMatcher = /(^.*?[.!?])(?:\s|$)(.*)|(.*)/s;
 const tagMatcher = new RegExp(`(?<=\\s|^)${tagCharacter}(\\w+)\\b`, 'g');
 
 const stripTagChar = tag => tag.substring(1);
 const tagToLowercase = tag => tag.toLowerCase();
-const tagFormatter = tag => tagToLowercase(stripTagChar(tag));
+const tagFormatter = tag => compose(tagToLowercase, stripTagChar)(tag);
 const removeDuplicateTags = (unique, item) => (unique.includes(item) ? unique : [...unique, item]);
-
-const colorTags = str => str.replace(tagMatcher, chalk.blue('$1'));
-const boldTags = str => str.replace(tagMatcher, '__$1__');
 
 const Entry = entryText => {
   const entry = entryMatcher.exec(entryText);
@@ -36,16 +31,6 @@ const Entry = entryText => {
   newEntry.timeStamp = Date.now();
 
   return newEntry;
-};
-
-const entryToString = entry => {
-  const timeStamp = moment(entry.timeStamp).format(timeStampFormat);
-  return `${chalk.blue(timeStamp)} - ${colorTags(entry.title)}\n\n${colorTags(entry.text)}`;
-};
-
-const entryToMarkDown = entry => {
-  const timeStamp = moment(entry.timeStamp).format(timeStampFormat);
-  return `## ${timeStamp} - ${boldTags(entry.title)}\n\n${boldTags(entry.text)}`;
 };
 
 const listEntries = async (writer, numberOfEntries, before, after, grep, toMD) => {
