@@ -1,12 +1,6 @@
 const compose = require('./fp');
 const { entryToString, entryToMarkDown } = require('./util/printer');
-const { readEntries } = require('./util/util');
-const {
-  beforeFilter,
-  afterFilter,
-  grepFilter,
-  entryFilter
-} = require('./util/filters');
+const { entryFilter } = require('./util/filters');
 
 const tagCharacter = '~';
 
@@ -33,15 +27,10 @@ const Entry = entryText => {
   return newEntry;
 };
 
-const listEntries = async (writer, numberOfEntries, before, after, grep, toMD) => {
-  let filters = [];
-  filters = before ? filters.concat(beforeFilter(before)) : filters;
-  filters = after ? filters.concat(afterFilter(after)) : filters;
-  filters = grep ? filters.concat(grepFilter(grep)) : filters;
-
+const listEntries = (writer, numberOfEntries, filters, toMD) => entries => {
   const converter = toMD ? entryToMarkDown : entryToString;
 
-  (await readEntries())
+  entries
     .filter(entryFilter(filters))
     .slice(0, numberOfEntries)
     .map(entry => writer(converter(entry)));

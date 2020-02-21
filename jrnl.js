@@ -3,7 +3,8 @@
 const readline = require('readline');
 const yargs = require('yargs');
 const { Entry, listEntries } = require('./src/entry');
-const { addNewEntry } = require('./src/util/util');
+const { addNewEntry, readEntries } = require('./src/util/util');
+const { combineFilters } = require('./src/util/filters');
 
 const { argv } = yargs
   .usage('Usage: $0 -l [options]')
@@ -26,7 +27,15 @@ const { argv } = yargs
 
 if (argv.list) {
   const numberOfEntries = argv.list === true ? Number.MAX_VALUE : argv.list;
-  listEntries(console.log, numberOfEntries, argv.before, argv.after, argv.grep, argv.markdown);
+  (async () => {
+    const entries = await readEntries();
+    listEntries(
+      console.log,
+      numberOfEntries,
+      combineFilters(argv.before, argv.after, argv.grep),
+      argv.markdown
+    )(entries);
+  })();
 } else if (argv._.length === 0) {
   const rl = readline.createInterface({
     input: process.stdin,

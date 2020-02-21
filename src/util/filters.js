@@ -8,9 +8,18 @@ const grepFilter = filterText => entry => RegExp(filterText, 'i').test(entry.tit
 
 const entryFilter = filters => entry => filters.reduce((acc, curr) => acc && curr(entry), true);
 
+const combineFilters = (before, after, grep) => {
+  let filters = [];
+  filters = before ? filters.concat(beforeFilter(before)) : filters;
+  filters = after ? filters.concat(afterFilter(after)) : filters;
+  filters = grep ? filters.concat(grepFilter(grep)) : filters;
+  return filters;
+};
+
 module.exports = {
   beforeFilter,
   afterFilter,
   grepFilter,
-  entryFilter
+  entryFilter,
+  combineFilters
 };

@@ -50,3 +50,16 @@ describe('Entry creation', () => {
     expect(entry.tags.length).toBe(2);
   });
 });
+
+describe('List entries', () => {
+  test('Single line entry', () => {
+    const text = 'Test';
+
+    const entry = Entry(text);
+
+    expect(entry.title).toBe(text);
+    expect(entry.text).toBe('');
+    expect(entry.tags).toEqual([]);
+    expect(entry.timeStamp).toBe(now);
+  });
+});
