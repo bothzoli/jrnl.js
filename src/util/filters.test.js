@@ -4,7 +4,8 @@ const {
   beforeFilter,
   afterFilter,
   grepFilter,
-  entryFilter
+  entryFilter,
+  combineFilters
 } = require('./filters');
 
 
@@ -65,5 +66,43 @@ describe('Entry filters', () => {
       afterFilter(pastString),
       grepFilter(matchString)
     ])(fullMatch)).toBe(true);
+  });
+});
+
+describe('Combine filters', () => {
+  test('Only after filter', () => {
+    const combinedFilters = combineFilters(futureString, undefined, undefined);
+
+    expect(combinedFilters.length).toBe(1);
+    expect(combinedFilters[0].toString())
+      .toEqual(beforeFilter(futureString).toString());
+  });
+
+  test('Only before filter', () => {
+    const combinedFilters = combineFilters(undefined, pastString, undefined);
+
+    expect(combinedFilters.length).toBe(1);
+    expect(combinedFilters[0].toString())
+      .toEqual(afterFilter(pastString).toString());
+  });
+
+  test('Only grep filter', () => {
+    const combinedFilters = combineFilters(undefined, undefined, matchString);
+
+    expect(combinedFilters.length).toBe(1);
+    expect(combinedFilters[0].toString())
+      .toEqual(grepFilter(matchString).toString());
+  });
+
+  test('Combine all filters', () => {
+    const combinedFilters = combineFilters(futureString, pastString, matchString);
+
+    expect(combinedFilters.length).toBe(3);
+    expect(combinedFilters[0].toString())
+      .toEqual(beforeFilter(futureString).toString());
+    expect(combinedFilters[1].toString())
+      .toEqual(afterFilter(pastString).toString());
+    expect(combinedFilters[2].toString())
+      .toEqual(grepFilter(matchString).toString());
   });
 });

@@ -1,4 +1,9 @@
-const { Entry } = require('./entry');
+const printer = require('./util/printer');
+
+printer.entryToString = jest.fn(x => x);
+printer.entryToMarkDown = jest.fn(x => x);
+
+const { Entry, listEntries } = require('./entry');
 
 const now = new Date('2018-01-01T12:23:34');
 Date.now = jest.fn(() => now);
@@ -52,14 +57,40 @@ describe('Entry creation', () => {
 });
 
 describe('List entries', () => {
-  test('Single line entry', () => {
-    const text = 'Test';
+  beforeEach(() => {
+    printer.entryToMarkDown.mockClear();
+    printer.entryToString.mockClear();
+  });
+
+  test('Entry to string', () => {
+    const text = 'Test!\nEntryText\n';
 
     const entry = Entry(text);
 
-    expect(entry.title).toBe(text);
-    expect(entry.text).toBe('');
-    expect(entry.tags).toEqual([]);
-    expect(entry.timeStamp).toBe(now);
+    const writer = jest.fn(x => x);
+    listEntries(writer, 1, [], false)([entry]);
+
+    expect(printer.entryToMarkDown.mock.calls.length).toBe(0);
+    expect(printer.entryToString.mock.calls.length).toBe(1);
+    expect(printer.entryToString.mock.calls[0][0]).toEqual(entry);
+
+    expect(writer.mock.calls.length).toBe(1);
+    expect(writer.mock.calls[0][0]).toEqual(entry);
+  });
+
+  test('Entry to markdown', () => {
+    const text = 'Test!\nEntryText\n';
+
+    const entry = Entry(text);
+
+    const writer = jest.fn(x => x);
+    listEntries(writer, 1, [], true)([entry]);
+
+    expect(printer.entryToString.mock.calls.length).toBe(0);
+    expect(printer.entryToMarkDown.mock.calls.length).toBe(1);
+    expect(printer.entryToMarkDown.mock.calls[0][0]).toEqual(entry);
+
+    expect(writer.mock.calls.length).toBe(1);
+    expect(writer.mock.calls[0][0]).toEqual(entry);
   });
 });
