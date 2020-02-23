@@ -1,4 +1,4 @@
-const { blue } = require('chalk');
+const { green } = require('chalk');
 const moment = require('moment');
 
 const { entryToString, entryToMarkDown } = require('./printer');
@@ -14,8 +14,8 @@ describe('Print utilities', () => {
     expect(entryToMarkDown(testEntry))
       .toBe('## 2018-02-03 12:34:56 - Title with __tag__.\n\nText with __another__.');
   });
-  test('MarkDown converter', () => {
+  test('Entry to string converter', () => {
     expect(entryToString(testEntry))
-      .toBe(`${blue('2018-02-03 12:34:56')} - Title with ${blue('tag')}.\n\nText with ${blue('another')}.`);
+      .toBe(`${green('2018-02-03 12:34:56')} - Title with ${green('tag')}.\n\nText with ${green('another')}.`);
   });
 });

@@ -1,16 +1,19 @@
-const { blue } = require('chalk');
+const { green } = require('chalk');
 const moment = require('moment');
 
 const tagCharacter = '~';
 const timeStampFormat = 'YYYY-MM-DD HH:mm:ss';
 const tagMatcher = new RegExp(`(?<=\\s|^)${tagCharacter}(\\w+)\\b`, 'g');
 
-const colorTags = str => str.replace(tagMatcher, blue('$1'));
-const boldTags = str => str.replace(tagMatcher, '__$1__');
+const boldText = str => `__${str}__`;
+const highlightTagsWith = highlighter => str => str.replace(tagMatcher, highlighter('$1'));
+
+const colorTags = highlightTagsWith(green);
+const boldTags = highlightTagsWith(boldText);
 
 const entryToString = entry => {
   const timeStamp = moment(entry.timeStamp).format(timeStampFormat);
-  return `${blue(timeStamp)} - ${colorTags(entry.title)}\n\n${colorTags(entry.text)}`;
+  return `${green(timeStamp)} - ${colorTags(entry.title)}\n\n${colorTags(entry.text)}`;
 };
 
 const entryToMarkDown = entry => {
