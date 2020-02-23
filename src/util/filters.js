@@ -4,15 +4,21 @@ const beforeFilter = timeStamp => entry => (timeStamp ? entry.timeStamp < moment
 
 const afterFilter = timeStamp => entry => (timeStamp ? entry.timeStamp > moment(timeStamp) : true);
 
-const entryContainsText = filterText => entry => RegExp(filterText, 'i').test(entry.title) || RegExp(filterText, 'i').test(entry.text);
+const regexpTest = filterText => searchText => RegExp(filterText, 'i').test(searchText);
+
+const entryContainsText = filterText => entry => regexpTest(filterText)(entry.title) || regexpTest(filterText)(entry.text);
 const grepFilter = filterText => entry => (filterText ? entryContainsText(filterText)(entry) : true);
+
+const tagsMatchText = filterText => entry => entry.tags.filter(tag => regexpTest(filterText)(tag)).length > 0;
+const tagFilter = filterText => entry => (filterText ? tagsMatchText(filterText)(entry) : true);
 
 const entryFilter = filters => entry => filters.reduce((acc, curr) => acc && curr(entry), true);
 
-const combineFilters = (before, after, grep) => [
+const combineFilters = (before, after, grep, tag) => [
   beforeFilter(before),
   afterFilter(after),
-  grepFilter(grep)
+  grepFilter(grep),
+  tagFilter(tag)
 ];
 
 module.exports = {
@@ -20,5 +26,6 @@ module.exports = {
   afterFilter,
   grepFilter,
   entryFilter,
+  tagFilter,
   combineFilters
 };

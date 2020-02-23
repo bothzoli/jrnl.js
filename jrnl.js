@@ -17,6 +17,8 @@ const { argv } = yargs
   .describe('a', 'Only list entries created after a given date')
   .alias('g', 'grep')
   .describe('g', 'RegExp search in entries')
+  .alias('t', 'tag')
+  .describe('t', 'RegExp search in tags')
   .example('$0 -l -a 2010-01-12 -g "beers?"', 'List entries created after 2010-01-12 that contain "beer" or "beers"')
   .alias('m', 'markdown')
   .describe('m', 'List entries in MarkDown format')
@@ -32,7 +34,7 @@ if (argv.list) {
     listEntries(
       console.log,
       numberOfEntries,
-      combineFilters(argv.before, argv.after, argv.grep),
+      combineFilters(argv.before, argv.after, argv.grep, argv.tag),
       argv.markdown
     )(entries);
   })();

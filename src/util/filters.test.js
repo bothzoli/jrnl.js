@@ -5,6 +5,7 @@ const {
   afterFilter,
   grepFilter,
   entryFilter,
+  tagFilter,
   combineFilters
 } = require('./filters');
 
@@ -22,6 +23,7 @@ const future = {
 };
 
 const matchString = 'match';
+const tagMatchString = 'tag';
 
 const titleMatch = {
   title: matchString.toUpperCase(),
@@ -35,12 +37,14 @@ const textMatch = {
 
 const noMatch = {
   title: 'something',
-  text: 'something else'
+  text: 'something else',
+  tags: ['anything']
 };
 
 const fullMatch = {
   title: matchString.toUpperCase(),
-  timeStamp: moment(now)
+  timeStamp: moment(now),
+  tags: ['tag', 'another']
 };
 
 describe('Entry filters', () => {
@@ -63,6 +67,12 @@ describe('Entry filters', () => {
     expect(grepFilter(matchString)(noMatch)).toBe(false);
   });
 
+  test('tagFilter', () => {
+    expect(tagFilter()(noMatch)).toBe(true);
+    expect(tagFilter(tagMatchString)(noMatch)).toBe(false);
+    expect(tagFilter(tagMatchString)(fullMatch)).toBe(true);
+  });
+
   test('entryFilter', () => {
     expect(entryFilter([
       beforeFilter(futureString),
@@ -74,14 +84,16 @@ describe('Entry filters', () => {
 
 describe('Combine filters', () => {
   test('Combine all filters', () => {
-    const combinedFilters = combineFilters(futureString, pastString, matchString);
+    const combinedFilters = combineFilters(futureString, pastString, matchString, tagMatchString);
 
-    expect(combinedFilters.length).toBe(3);
+    expect(combinedFilters.length).toBe(4);
     expect(combinedFilters[0].toString())
       .toEqual(beforeFilter(futureString).toString());
     expect(combinedFilters[1].toString())
       .toEqual(afterFilter(pastString).toString());
     expect(combinedFilters[2].toString())
       .toEqual(grepFilter(matchString).toString());
+    expect(combinedFilters[3].toString())
+      .toEqual(tagFilter(tagMatchString).toString());
   });
 });
