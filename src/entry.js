@@ -2,11 +2,11 @@ const compose = require('./fp');
 const { entryToString, entryToMarkDown } = require('./util/printer');
 const { entryFilter } = require('./util/filters');
 
-const tagCharacter = '~';
+const settings = require('./../settings');
 
 const entryMatcher = /(^.*?[.!?])(?:\s|$)(.*)|(.*)/s;
 
-const tagMatcher = new RegExp(`(?<=\\s|^)${tagCharacter}(\\w+)\\b`, 'g');
+const tagMatcher = new RegExp(`(?<=\\s|^)${settings.tagCharacter}(\\w+)\\b`, 'g');
 const getTags = entryText => entryText.match(tagMatcher) || [];
 
 const stripTagChar = tag => tag.substring(1);

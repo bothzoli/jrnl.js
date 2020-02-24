@@ -1,5 +1,7 @@
 const printer = require('./util/printer');
 
+const settings = require('./../settings');
+
 printer.entryToString = jest.fn(x => x);
 printer.entryToMarkDown = jest.fn(x => x);
 
@@ -37,7 +39,7 @@ describe('Entry creation', () => {
   });
 
   test('Tags', () => {
-    const text = '~Test to see if it caputers ~tags as expected';
+    const text = `${settings.tagCharacter}Test to see if it caputers ${settings.tagCharacter}tags as expected`;
     const tags = ['test', 'tags'];
 
     const entry = Entry(text);
@@ -46,7 +48,7 @@ describe('Entry creation', () => {
   });
 
   test('Duplicate tags', () => {
-    const text = 'this is the ~title. and this is the ~body. this should not be in the ~title.';
+    const text = `this is the ${settings.tagCharacter}title. and this is the ${settings.tagCharacter}body. this should not be in the ${settings.tagCharacter}title.`;
     const tags = ['title', 'body'];
 
     const entry = Entry(text);

@@ -1,6 +1,7 @@
 const fs = require('fs');
+const settings = require('./../../settings');
 
-const entriesJSON = './entries.json';
+const entriesJSON = settings.entriesPath;
 
 const readFromFile = async fileName => (await fs.promises.readFile(fileName, 'utf8').catch(() => null)) || '[]';
 
