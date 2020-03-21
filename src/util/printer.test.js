@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 const moment = require('moment');
-const settings = require('./../../settings');
+const settings = require('../../settings');
 
 const { entryToString, entryToMarkDown } = require('./printer');
 
@@ -17,6 +17,6 @@ describe('Print utilities', () => {
   });
   test('Entry to string converter', () => {
     expect(entryToString(testEntry))
-      .toBe(`${chalk[settings.timeStampColor](testEntry.timeStamp.format(settings.timeStampFormat))} - Title with ${chalk[settings.tagColor]('tag')}.\n\nText with ${chalk[settings.tagColor]('another')}.`);
+      .toBe(`${chalk[settings.timeStampColor](testEntry.timeStamp.format(settings.timeStampFormat))} - Title with ${chalk[settings.tagColor]('tag')}.\n| Text with ${chalk[settings.tagColor]('another')}.\n`);
   });
 });

@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 const moment = require('moment');
-const settings = require('./../../settings');
+const settings = require('../../settings');
 
 const tagMatcher = new RegExp(`(?<=\\s|^)${settings.tagCharacter}(\\w+)\\b`, 'g');
 
@@ -12,7 +12,8 @@ const boldTags = highlightTagsWith(boldText);
 
 const entryToString = entry => {
   const timeStamp = moment(entry.timeStamp).format(settings.timeStampFormat);
-  return `${chalk[settings.timeStampColor](timeStamp)} - ${colorTags(entry.title)}\n\n${colorTags(entry.text)}`;
+  const text = entry.text ? `\n| ${colorTags(entry.text.replace(/\n/g, '\n| '))}\n` : '\n';
+  return `${chalk[settings.timeStampColor](timeStamp)} - ${colorTags(entry.title)}${text}`;
 };
 
 const entryToMarkDown = entry => {

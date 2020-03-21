@@ -1,5 +1,5 @@
 const fs = require('fs');
-const settings = require('./../../settings');
+const settings = require('../../settings');
 
 const entriesJSON = settings.entriesPath;
 

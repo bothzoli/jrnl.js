@@ -1,6 +1,6 @@
 const printer = require('./util/printer');
 
-const settings = require('./../settings');
+const settings = require('../settings');
 
 printer.entryToString = jest.fn(x => x);
 printer.entryToMarkDown = jest.fn(x => x);

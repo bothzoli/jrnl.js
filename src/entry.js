@@ -2,7 +2,7 @@ const compose = require('./fp');
 const { entryToString, entryToMarkDown } = require('./util/printer');
 const { entryFilter } = require('./util/filters');
 
-const settings = require('./../settings');
+const settings = require('../settings');
 
 const entryMatcher = /(^.*?[.!?])(?:\s|$)(.*)|(.*)/s;
 
@@ -15,7 +15,8 @@ const tagFormatter = tag => compose(tagToLowercase, stripTagChar)(tag);
 const removeDuplicateTags = (unique, item) => (unique.includes(item) ? unique : [...unique, item]);
 
 const Entry = entryText => {
-  const entry = entryMatcher.exec(entryText);
+  const strippedEntryText = entryText.slice(-1) === '\n' ? entryText.slice(0, -1) : entryText;
+  const entry = entryMatcher.exec(strippedEntryText);
   return {
     title: entry[1] ? entry[1] : entryText,
     text: entry[2] ? entry[2] : '',
