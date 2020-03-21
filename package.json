@@ -18,6 +18,9 @@
   ],
   "author": "bothzoli",
   "license": "MIT",
+  "bin": {
+    "jrnl": "./jrnl.js"
+  },
   "bugs": {
     "url": "https://github.com/bothzoli/jrnl.js/issues"
   },
