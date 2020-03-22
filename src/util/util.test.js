@@ -1,7 +1,8 @@
 const fs = require('fs');
+const settings = require('../../settings');
 const { addNewEntry, readEntries } = require('./util');
 
-const entriesJSON = './entries.json';
+const entriesJSON = settings.entriesPath;
 
 describe('File utilities', () => {
   test('Add 1 entry to non-existing entries', async () => {

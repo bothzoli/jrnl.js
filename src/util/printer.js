@@ -18,7 +18,7 @@ const entryToString = entry => {
 
 const entryToMarkDown = entry => {
   const timeStamp = moment(entry.timeStamp).format(settings.timeStampFormat);
-  return `## ${timeStamp} - ${boldTags(entry.title)}\n\n${boldTags(entry.text)}`;
+  return `## ${timeStamp} - ${boldTags(entry.title)}\n\n${boldTags(entry.text)}\n`;
 };
 
 module.exports = {

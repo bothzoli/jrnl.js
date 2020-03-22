@@ -19,7 +19,7 @@ const testEntry = {
 describe('Print utilities', () => {
   test('MarkDown converter', () => {
     expect(entryToMarkDown(testEntry))
-      .toBe(`## ${testEntry.timeStamp.format(settings.timeStampFormat)} - Title with __tag__.\n\nText with __another__.`);
+      .toBe(`## ${testEntry.timeStamp.format(settings.timeStampFormat)} - Title with __tag__.\n\nText with __another__.\n`);
   });
   test('Entry to string converter - single line', () => {
     expect(entryToString(singleLineEntry))
