@@ -38,6 +38,36 @@ describe('Entry creation', () => {
     expect(entry.timeStamp).toBe(now);
   });
 
+  test.each([
+    ['fullstop', '.'],
+    ['exclamation mark', '!'],
+    ['question mark', '?']
+  ])('Simple entry - Title with %s', (name, character) => {
+    const title = `This is the title${character}`;
+    const text = 'This is the text';
+    const fullText = `${title} ${text}`;
+
+    const entry = Entry(fullText);
+
+    expect(entry.title).toBe(title);
+    expect(entry.text).toBe(text);
+    expect(entry.tags).toEqual([]);
+    expect(entry.timeStamp).toBe(now);
+  });
+
+  test('Simple entry - Title with new line', () => {
+    const title = 'This is the title';
+    const text = 'This is the text';
+    const fullText = `${title}\n${text}`;
+
+    const entry = Entry(fullText);
+
+    expect(entry.title).toBe(title);
+    expect(entry.text).toBe(text);
+    expect(entry.tags).toEqual([]);
+    expect(entry.timeStamp).toBe(now);
+  });
+
   test('Tags', () => {
     const text = `${settings.tagCharacter}Test to see if it caputers ${settings.tagCharacter}tags as expected`;
     const tags = ['test', 'tags'];
