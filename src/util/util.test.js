@@ -39,7 +39,7 @@ describe('File utilities', () => {
   });
 
 
-  test('Read entries when none exists', async () => {
+  test('Read entries when one entry exists', async () => {
     fs.promises.readFile = jest.fn(() => Promise.resolve('["qwer"]'));
 
     const entries = await readEntries();

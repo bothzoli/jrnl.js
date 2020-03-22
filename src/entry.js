@@ -4,7 +4,13 @@ const { entryFilter } = require('./util/filters');
 
 const settings = require('../settings');
 
-const entryMatcher = /(^.*?[.!?])(?:\s|$)(.*)|(.*)/s;
+const slice = text => {
+  const split = text.match(/((?<=(\.|!|\?)) |\n)/);
+  if (split) {
+    return [text.slice(0, split.index), text.slice(split.index + 1)];
+  }
+  return [text, ''];
+};
 
 const tagMatcher = new RegExp(`(?<=\\s|^)${settings.tagCharacter}(\\w+)\\b`, 'g');
 const getTags = entryText => entryText.match(tagMatcher) || [];
@@ -16,10 +22,10 @@ const removeDuplicateTags = (unique, item) => (unique.includes(item) ? unique : 
 
 const Entry = entryText => {
   const strippedEntryText = entryText.slice(-1) === '\n' ? entryText.slice(0, -1) : entryText;
-  const entry = entryMatcher.exec(strippedEntryText);
+  const entry = slice(strippedEntryText);
   return {
-    title: entry[1] ? entry[1] : entryText,
-    text: entry[2] ? entry[2] : '',
+    title: entry[0],
+    text: entry[1],
     tags: getTags(entryText)
       .map(tagFormatter)
       .reduce(removeDuplicateTags, [])
