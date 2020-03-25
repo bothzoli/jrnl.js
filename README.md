@@ -1,4 +1,4 @@
-![](https://github.com/bothzoli/jrnl.js/workflows/cibuild/badge.svg) ![](https://github.com/bothzoli/jrnl.js/workflows/bidaily/badge.svg)
+![](https://github.com/bothzoli/jrnl.js/workflows/cibuild/badge.svg) ![](https://github.com/bothzoli/jrnl.js/workflows/bidaily/badge.svg) [![codecov](https://codecov.io/gh/bothzoli/jrnl.js/branch/master/graph/badge.svg)](https://codecov.io/gh/bothzoli/jrnl.js)
 
 # jrnl.js - Command line journal
 
