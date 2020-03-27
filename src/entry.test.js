@@ -94,7 +94,7 @@ describe('List entries', () => {
     printer.entryToString.mockClear();
   });
 
-  test.skip('Entry to string', () => {
+  test('Entry to string', () => {
     const text = 'Test!\nEntryText\n';
 
     const entry = Entry(text);
@@ -110,7 +110,7 @@ describe('List entries', () => {
     expect(writer.mock.calls[0][0]).toEqual(entry);
   });
 
-  test.skip('Entry to markdown', () => {
+  test('Entry to markdown', () => {
     const text = 'Test!\nEntryText\n';
 
     const entry = Entry(text);
