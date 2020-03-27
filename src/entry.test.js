@@ -110,7 +110,7 @@ describe('List entries', () => {
     expect(writer.mock.calls[0][0]).toEqual(entry);
   });
 
-  test('Entry to markdown', () => {
+  test.skip('Entry to markdown', () => {
     const text = 'Test!\nEntryText\n';
 
     const entry = Entry(text);
