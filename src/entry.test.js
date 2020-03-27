@@ -94,7 +94,7 @@ describe('List entries', () => {
     printer.entryToString.mockClear();
   });
 
-  test('Entry to string', () => {
+  test.skip('Entry to string', () => {
     const text = 'Test!\nEntryText\n';
 
     const entry = Entry(text);
