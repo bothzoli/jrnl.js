@@ -1,4 +1,4 @@
-![](https://github.com/bothzoli/jrnl.js/workflows/cibuild/badge.svg) [![codecov](https://codecov.io/gh/bothzoli/jrnl.js/branch/master/graph/badge.svg)](https://codecov.io/gh/bothzoli/jrnl.js)
+![](https://github.com/bothzoli/jrnl.js/workflows/cibuild/badge.svg) [![codecov](https://codecov.io/gh/bothzoli/jrnl.js/branch/master/graph/badge.svg)](https://codecov.io/gh/bothzoli/jrnl.js) [![](https://img.shields.io/npm/v/@bothzoli/jrnl)](https://www.npmjs.com/package/@bothzoli/jrnl)
 
 # jrnl.js - Command line journal
 
@@ -20,19 +20,23 @@ My main goals for this project were:
 
 ## Installation
 
-Currently this is not yet an npm package, so you'll only need to clone the project and install the npm dependencies.
+This project is now released as an npm package, so to use it simply run the following command:
 
-```bash
-git clone https://github.com/bothzoli/jrnl.js.git;
-npm install;
+```
+npm install -g @bothzoli/jrnl
+```
+
+If you don't want to install it globally, you can simply clone the repository:
+
+```
+git clone https://github.com/bothzoli/jrnl.js.git
+npm install
 ```
 
 After this you can start using it from the download folder by prefixing all commands with `node` (e.g.: `node jrnl --list`).
 
-You can also use `npm link` to create a symlink in your global folder (see the [documentation](https://docs.npmjs.com/cli/link.html) on `npm link`).
+Or, you can use `npm link` to create a symlink in your global folder (see the [documentation](https://docs.npmjs.com/cli/link.html) on `npm link`).
 After this you should be able to use `jrnl` as if it were globally installed.
-
-I am planning to release this as an npm package in the near future.
 
 ## What it does and how to use it
 
