@@ -1,4 +1,4 @@
-![](https://github.com/bothzoli/jrnl.js/workflows/cibuild/badge.svg) [![codecov](https://codecov.io/gh/bothzoli/jrnl.js/branch/master/graph/badge.svg)](https://codecov.io/gh/bothzoli/jrnl.js) [![](https://img.shields.io/npm/v/@bothzoli/jrnl)](https://www.npmjs.com/package/@bothzoli/jrnl)
+![Node.js CI](https://github.com/bothzoli/jrnl.js/workflows/Node.js%20CI/badge.svg) [![codecov](https://codecov.io/gh/bothzoli/jrnl.js/branch/master/graph/badge.svg)](https://codecov.io/gh/bothzoli/jrnl.js) [![](https://img.shields.io/npm/v/@bothzoli/jrnl)](https://www.npmjs.com/package/@bothzoli/jrnl)
 
 # jrnl.js - Command line journal
 
