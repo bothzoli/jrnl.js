@@ -1,51 +1,50 @@
-const fs = require('fs');
-const settings = require('../../settings');
-const { addNewEntry, readEntries } = require('./util');
+const fileUtil = require('./fileUtil');
 
-const entriesJSON = settings.entriesPath;
+const nonExistentFileName = 'NOT_EXISTS';
+const existingFileName = 'EXISTS';
 
-describe('File utilities', () => {
-  test('Add 1 entry to non-existing entries', async () => {
-    fs.promises.readFile = jest.fn(() => Promise.reject());
-    fs.promises.writeFile = jest.fn();
+fileUtil.readFromFile = jest.fn(async fileName => {
+  if (fileName === nonExistentFileName) {
+    return null;
+  } if (fileName === existingFileName) {
+    return '["qwer"]';
+  }
+  return null;
+});
+const writeToFileMock = jest.fn(async () => { });
+fileUtil.writeToFile = jest.fn(() => writeToFileMock);
 
-    await addNewEntry('asdf');
+const cipher = require('./cipher');
 
-    const writeFileName = fs.promises.writeFile.mock.calls[0][0];
-    const writeFileArgument = fs.promises.writeFile.mock.calls[0][1];
+cipher.encrypt = jest.fn(() => input => input);
+cipher.decrypt = jest.fn(() => input => input);
 
-    expect(writeFileName).toBe(entriesJSON);
-    expect(writeFileArgument).toBe('["asdf"]');
+const { readEntries, writeEntries } = require('./util');
+
+describe('Entry utilities', () => {
+  test('Read from non-existent file', async () => {
+    const fileContent = await readEntries(nonExistentFileName);
+
+    expect(fileContent).toStrictEqual(JSON.parse('[]'));
   });
 
-  test('Add 1 entry to already existing entries', async () => {
-    fs.promises.readFile = jest.fn(() => Promise.resolve('["qwer"]'));
-    fs.promises.writeFile = jest.fn();
+  test('Read from existing file', async () => {
+    const fileContent = await readEntries(existingFileName);
 
-    await addNewEntry('asdf');
-
-    const writeFileName = fs.promises.writeFile.mock.calls[0][0];
-    const writeFileArgument = fs.promises.writeFile.mock.calls[0][1];
-
-    expect(writeFileName).toBe(entriesJSON);
-    expect(writeFileArgument).toBe('["asdf","qwer"]');
+    expect(fileContent).toStrictEqual(JSON.parse('["qwer"]'));
   });
 
-  test('Read entries when none exists', async () => {
-    fs.promises.readFile = jest.fn(() => Promise.reject());
+  test('Write to non-existent file', async () => {
+    writeToFileMock.mockClear();
+    await writeEntries(nonExistentFileName)('asdf');
 
-    const entries = await readEntries();
-
-    expect(entries.length).toBe(0);
+    expect(writeToFileMock.mock.calls[0][0]).toStrictEqual('["asdf"]');
   });
 
+  test('Write to existing file', async () => {
+    writeToFileMock.mockClear();
+    await writeEntries(existingFileName)('asdf');
 
-  test('Read entries when one entry exists', async () => {
-    fs.promises.readFile = jest.fn(() => Promise.resolve('["qwer"]'));
-
-    const entries = await readEntries();
-
-    expect(entries.length).toBe(1);
-    expect(entries[0]).toBe('qwer');
+    expect(writeToFileMock.mock.calls[0][0]).toStrictEqual('["asdf","qwer"]');
   });
 });

@@ -3,8 +3,9 @@
 const readline = require('readline');
 const yargs = require('yargs');
 const chalk = require('chalk');
+const settings = require('./settings');
 const { Entry, listEntries } = require('./src/entry');
-const { addNewEntry, readEntries } = require('./src/util/util');
+const { readEntries, writeEntries } = require('./src/util/util');
 const { combineFilters } = require('./src/util/filters');
 
 const { argv } = yargs
@@ -32,7 +33,7 @@ const { argv } = yargs
 if (argv.list) {
   const numberOfEntries = argv.list === true ? Number.MAX_VALUE : argv.list;
   (async () => {
-    const entries = await readEntries();
+    const entries = await readEntries(settings.entriesPath);
     listEntries(
       console.log,
       numberOfEntries,
@@ -59,7 +60,7 @@ if (argv.list) {
     }).on('close', async () => {
       const newEntry = Entry(jrnlEntry);
 
-      await addNewEntry(newEntry);
+      await writeEntries(settings.entriesPath)(newEntry);
 
       listEntries(console.log, 1);
     });

@@ -1,23 +1,19 @@
-const fs = require('fs');
-const settings = require('../../settings');
+const { readFromFile, writeToFile } = require('./fileUtil');
+const { encrypt, decrypt } = require('./cipher');
 
-const entriesJSON = settings.entriesPath;
+const password = 'Pas$w0Rd1!';
 
-const readFromFile = async fileName => (await fs.promises.readFile(fileName, 'utf8').catch(() => null)) || '[]';
-
-const writeToFile = fileName => async entries => {
-  await fs.promises.writeFile(fileName, JSON.stringify(entries));
+const readEntries = async fileName => {
+  const content = decrypt(password)(await readFromFile(fileName)) || '[]';
+  return JSON.parse(content);
 };
 
-const addNewEntry = async entry => {
-  const entries = (await fs.promises.readFile(entriesJSON, 'utf8').catch(() => null)) || '[]';
-
-  await writeToFile(entriesJSON)([entry, ...JSON.parse(entries)]);
+const writeEntries = fileName => async content => {
+  const currentContent = await readEntries(fileName);
+  writeToFile(fileName)(encrypt(password)(JSON.stringify([content, ...currentContent])));
 };
-
-const readEntries = async () => JSON.parse(await readFromFile(entriesJSON));
 
 module.exports = {
-  addNewEntry,
-  readEntries
+  readEntries,
+  writeEntries
 };
