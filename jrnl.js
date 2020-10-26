@@ -3,7 +3,7 @@
 const readline = require('readline');
 const yargs = require('yargs');
 const chalk = require('chalk');
-const settings = require('./settings');
+const settings = require('./src/settings');
 const { Entry, listEntries } = require('./src/entry');
 const { readEntries, writeEntries } = require('./src/util/util');
 const { combineFilters } = require('./src/util/filters');
@@ -22,7 +22,10 @@ const { argv } = yargs
   .describe('g', 'RegExp search in entries')
   .alias('t', 'tag')
   .describe('t', 'RegExp search in tags')
-  .example(`${chalk.blue('$0 -l 3 -a 2010-01-12 -g "beers?"')}`, 'List the last 3 entries created after 2010-01-12 that contain "beer" or "beers"')
+  .example(
+    `${chalk.blue('$0 -l 3 -a 2010-01-12 -g "beers?"')}`,
+    'List the last 3 entries created after 2010-01-12 that contain "beer" or "beers"'
+  )
   .alias('m', 'markdown')
   .describe('m', 'List entries in MarkDown format')
   .boolean('m')
@@ -54,7 +57,7 @@ if (argv.list) {
   let jrnlEntry = '';
 
   (async () => {
-    rl.on('line', line => {
+    rl.on('line', (line) => {
       jrnlEntry += `${line}\n`;
       rl.prompt();
     }).on('close', async () => {

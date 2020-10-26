@@ -21,6 +21,6 @@
             "windows"
         ],
         "arrow-parens": "off",
-        "comma-dangle": "off"
+        "quotes": ["single", "double"]
     }
 }

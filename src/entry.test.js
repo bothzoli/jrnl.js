@@ -1,9 +1,9 @@
 const printer = require('./util/printer');
 
-const settings = require('../settings');
+const settings = require('./settings');
 
-printer.entryToString = jest.fn(x => x);
-printer.entryToMarkDown = jest.fn(x => x);
+printer.entryToString = jest.fn((x) => x);
+printer.entryToMarkDown = jest.fn((x) => x);
 
 const { Entry, listEntries } = require('./entry');
 
@@ -41,7 +41,7 @@ describe('Entry creation', () => {
   test.each([
     ['fullstop', '.'],
     ['exclamation mark', '!'],
-    ['question mark', '?']
+    ['question mark', '?'],
   ])('Simple entry - Title with %s', (name, character) => {
     const title = `This is the title${character}`;
     const text = 'This is the text';
@@ -99,7 +99,7 @@ describe('List entries', () => {
 
     const entry = Entry(text);
 
-    const writer = jest.fn(x => x);
+    const writer = jest.fn((x) => x);
     listEntries(writer, 1, [], false)([entry]);
 
     expect(printer.entryToMarkDown.mock.calls.length).toBe(0);
@@ -115,7 +115,7 @@ describe('List entries', () => {
 
     const entry = Entry(text);
 
-    const writer = jest.fn(x => x);
+    const writer = jest.fn((x) => x);
     listEntries(writer, 1, [], true)([entry]);
 
     expect(printer.entryToString.mock.calls.length).toBe(0);

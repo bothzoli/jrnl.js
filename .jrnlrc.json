@@ -1,0 +1,8 @@
+{
+  "encrypt": false,
+  "tagCharacter": "~",
+  "timeStampFormat": "YYYY-MM-DD HH:mm",
+  "tagColor": "blue",
+  "timeStampColor": "blue",
+  "entriesPath": "~\\jrnl.json"
+}

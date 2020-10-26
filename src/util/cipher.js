@@ -1,9 +1,9 @@
 const crypto = require('crypto');
-const settings = require('../../settings');
+const settings = require('../settings');
 
 const algorithm = 'aes-256-cbc';
 
-const encrypt = password => textToCipher => {
+const encrypt = (password) => (textToCipher) => {
   if (!settings.encrypt) {
     return textToCipher;
   }
@@ -20,7 +20,7 @@ const encrypt = password => textToCipher => {
   return `${iv.toString('hex')}.${salt.toString('hex')}.${encrypted}`;
 };
 
-const decrypt = password => textToDecipher => {
+const decrypt = (password) => (textToDecipher) => {
   if (!settings.encrypt) {
     return textToDecipher;
   }
@@ -39,8 +39,7 @@ const decrypt = password => textToDecipher => {
   return Buffer.from(decrypted, 'base64').toString();
 };
 
-
 module.exports = {
   encrypt,
-  decrypt
+  decrypt,
 };
