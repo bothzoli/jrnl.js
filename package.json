@@ -1,6 +1,6 @@
 {
   "name": "@bothzoli/jrnl",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Command line journal",
   "main": "jrnl.js",
   "scripts": {
